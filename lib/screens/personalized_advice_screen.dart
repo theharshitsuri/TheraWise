@@ -9,7 +9,11 @@ class PersonalizedAdviceScreen extends StatelessWidget {
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           'Personalized Advice',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              fontSize: 24,
+              color: CupertinoColors.black),
         ),
       ),
       child: SafeArea(

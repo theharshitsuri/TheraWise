@@ -45,8 +45,14 @@ class CBTExercisesScreen extends StatelessWidget {
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text('CBT Exercises',
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        middle: Text(
+          'CBT Exercises',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              fontSize: 24,
+              color: CupertinoColors.black),
+        ),
       ),
       child: SafeArea(
         child: Padding(

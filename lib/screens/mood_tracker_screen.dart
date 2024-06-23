@@ -9,7 +9,11 @@ class MoodTrackerScreen extends StatelessWidget {
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           'Mood Tracker',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              fontSize: 24,
+              color: CupertinoColors.black),
         ),
       ),
       child: SafeArea(

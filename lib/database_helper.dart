@@ -30,8 +30,28 @@ class DatabaseHelper {
           )
           ''',
         );
+        await db.execute(
+          '''
+          CREATE TABLE MoodLogs(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            mood TEXT,
+            timestamp TEXT
+          )
+          ''',
+        );
       },
       version: 1,
+      onOpen: (db) async {
+        await db.execute(
+          '''
+          CREATE TABLE IF NOT EXISTS MoodLogs(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            mood TEXT,
+            timestamp TEXT
+          )
+          ''',
+        );
+      },
     );
   }
 
@@ -55,5 +75,21 @@ class DatabaseHelper {
         steps: maps[i]['steps'],
       );
     });
+  }
+
+  Future<void> insertMoodLog(String mood) async {
+    final db = await database;
+    await db.insert('MoodLogs',
+        {'mood': mood, 'timestamp': DateTime.now().toIso8601String()},
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    print('Mood logged: $mood');
+  }
+
+  Future<List<Map<String, dynamic>>> fetchMoodLogs() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps =
+        await db.query('MoodLogs', orderBy: 'timestamp DESC');
+    print('Fetched ${maps.length} mood logs');
+    return maps;
   }
 }
