@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "577294840070",
+    "project_id": "ai-therapy-app-92014",
+    "storage_bucket": "ai-therapy-app-92014.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577294840070:android:8ad5209b48c6de93076e87",
+        "android_client_info": {
+          "package_name": "com.example.thera_wise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoH_UnciIAjwt4gZ0aiwS_Wh5s1c_2bSg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
