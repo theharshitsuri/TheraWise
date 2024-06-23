@@ -18,10 +18,11 @@ class TheraWiseApp extends StatelessWidget {
       theme: CupertinoThemeData(
         primaryColor: CupertinoColors.systemBlue,
       ),
-      home: LogMoodScreen(),
+      home: HomeScreen(),
       routes: {
         '/cbt-exercises': (context) => const CBTExercisesScreen(),
         '/insert-exercise': (context) => const InsertExerciseScreen(),
+        '/log-mood': (context) => const LogMoodScreen(),
       },
     );
   }
