@@ -41,17 +41,6 @@ class DatabaseHelper {
         );
       },
       version: 1,
-      onOpen: (db) async {
-        await db.execute(
-          '''
-          CREATE TABLE IF NOT EXISTS MoodLogs(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            mood TEXT,
-            timestamp TEXT
-          )
-          ''',
-        );
-      },
     );
   }
 

@@ -27,7 +27,7 @@ class TheraWiseApp extends StatelessWidget {
         '/log-mood': (context) => const LogMoodScreen(),
         '/home': (context) => const HomeScreen(),
         '/personalized-advice': (context) => const PersonalizedAdviceScreen(),
-        '/mood-tracker': (context) => const MoodTrackerScreen(),
+        '/mood-tracker': (context) => const MoodTrendsScreen(),
       },
     );
   }

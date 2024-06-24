@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:thera_wise/database_helper.dart' as dbHelper;
 import 'package:thera_wise/database_helper.dart';
-import 'package:thera_wise/models.dart';
+import 'package:thera_wise/models.dart' as models;
+import 'package:thera_wise/models.dart'; // Add 'as models' to give a prefix
 
 class InsertExerciseScreen extends StatelessWidget {
   const InsertExerciseScreen({super.key});
@@ -15,8 +17,9 @@ class InsertExerciseScreen extends StatelessWidget {
       child: Center(
         child: CupertinoButton.filled(
           onPressed: () async {
-            List<Exercise> exercises = [
-              Exercise(
+            List<models.Exercise> exercises = [
+              // Use 'models.Exercise' as the constructor
+              models.Exercise(
                 title: 'Cognitive Restructuring',
                 description:
                     'Challenge negative thoughts and replace them with positive ones.',
@@ -24,14 +27,14 @@ class InsertExerciseScreen extends StatelessWidget {
                 steps:
                     '[{"step": "Identify negative thought"}, {"step": "Challenge it"}, {"step": "Replace with positive thought"}]',
               ),
-              Exercise(
+              models.Exercise(
                 title: 'Exposure Therapy',
                 description: 'Gradually face and overcome fears.',
                 category: 'Anxiety',
                 steps:
                     '[{"step": "Identify fear"}, {"step": "Face fear gradually"}, {"step": "Reflect on experience"}]',
               ),
-              Exercise(
+              models.Exercise(
                 title: 'Behavioral Activation',
                 description:
                     'Engage in activities that are enjoyable and meaningful to combat depression.',
@@ -39,7 +42,7 @@ class InsertExerciseScreen extends StatelessWidget {
                 steps:
                     '[{"step": "Identify enjoyable activities"}, {"step": "Schedule activities"}, {"step": "Reflect on experience"}]',
               ),
-              Exercise(
+              models.Exercise(
                 title: 'Mindfulness Meditation',
                 description:
                     'Practice mindfulness to manage stress and improve mental clarity.',
@@ -47,7 +50,8 @@ class InsertExerciseScreen extends StatelessWidget {
                 steps:
                     '[{"step": "Find a quiet place"}, {"step": "Focus on your breath"}, {"step": "Gently return to breath when distracted"}]',
               ),
-              Exercise(
+              models.Exercise(
+                // Use 'models.Exercise' as the constructor
                 title: 'Problem-Solving Therapy',
                 description:
                     'Systematically solve problems to reduce stress and improve decision-making.',
@@ -58,7 +62,7 @@ class InsertExerciseScreen extends StatelessWidget {
             ];
 
             for (var exercise in exercises) {
-              await DatabaseHelper().insertExercise(exercise);
+              await DatabaseHelper().insertExercise(exercise as Exercise);
             }
 
             ScaffoldMessenger.of(context).showSnackBar(
