@@ -67,7 +67,12 @@ class _MoodTrendsScreenState extends State<MoodTrendsScreen> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text('Mood Trends'), // Title of the screen
+        middle: Text('Mood Tracker',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                fontSize: 24,
+                color: CupertinoColors.black)), // Title of the screen
       ),
       child: SafeArea(
         child: Padding(
