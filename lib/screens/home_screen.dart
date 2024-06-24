@@ -148,7 +148,7 @@ class HomeScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Daily Tip',
+          Text('Tip of the Day',
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 25,

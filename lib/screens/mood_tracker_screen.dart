@@ -80,21 +80,6 @@ class _MoodTrendsScreenState extends State<MoodTrendsScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                CupertinoSegmentedControl<String>(
-                  children: {
-                    'Daily': Text('Daily'),
-                    'Weekly': Text('Weekly'),
-                    'Monthly': Text('Monthly'),
-                  },
-                  onValueChanged: (value) {
-                    setState(() {
-                      selectedPeriod = value;
-                      futureMoodLogs =
-                          _fetchMoodLogs(); // Refetch logs to update the charts
-                    });
-                  },
-                  groupValue: selectedPeriod,
-                ),
                 SizedBox(height: 16),
                 FutureBuilder<List<MoodLog>>(
                   future: futureMoodLogs,
@@ -115,6 +100,27 @@ class _MoodTrendsScreenState extends State<MoodTrendsScreen> {
                         _calculateMoodDistribution(filteredLogs);
                     return Column(
                       children: [
+                        Container(
+                          height: 300, // Set a finite height for the chart
+                          child: _buildMoodDistributionChart(moodDistribution),
+                        ),
+                        SizedBox(height: 16),
+                        CupertinoSegmentedControl<String>(
+                          children: {
+                            'Daily': Text('Daily'),
+                            'Weekly': Text('Weekly'),
+                            'Monthly': Text('Monthly'),
+                          },
+                          onValueChanged: (value) {
+                            setState(() {
+                              selectedPeriod = value;
+                              futureMoodLogs =
+                                  _fetchMoodLogs(); // Refetch logs to update the charts
+                            });
+                          },
+                          groupValue: selectedPeriod,
+                        ),
+                        SizedBox(height: 16),
                         Text(
                             'Average Mood Score: ${averageMoodScore.toStringAsFixed(2)}',
                             style: TextStyle(
@@ -123,11 +129,6 @@ class _MoodTrendsScreenState extends State<MoodTrendsScreen> {
                         Container(
                           height: 300, // Set a finite height for the chart
                           child: _buildMoodTrendsChart(filteredLogs),
-                        ),
-                        SizedBox(height: 16),
-                        Container(
-                          height: 300, // Set a finite height for the chart
-                          child: _buildMoodDistributionChart(moodDistribution),
                         ),
                       ],
                     );
