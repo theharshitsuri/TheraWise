@@ -13,10 +13,13 @@ class HomeScreen extends StatelessWidget {
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontStyle: FontStyle.italic,
-              fontSize: 24,
+              fontSize: 30,
               color: CupertinoColors.black),
         ),
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        border: Border(
+          bottom: BorderSide.none,
+        ),
       ),
       child: SafeArea(
         child: Padding(
@@ -24,6 +27,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              SizedBox(height: 30),
               Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
@@ -35,50 +39,32 @@ class HomeScreen extends StatelessWidget {
                       '/log-mood',
                       CupertinoIcons.smiley_fill,
                       'Log Mood',
-                      const Color(0xFF4CAF50),
                     ),
                     _buildGridButton(
                       context,
                       '/cbt-exercises',
                       CupertinoIcons.bolt_fill,
                       'CBT Exercises',
-                      const Color(0xFF03A9F4),
                     ),
                     _buildGridButton(
                       context,
                       '/mood-tracker',
                       CupertinoIcons.chart_bar_fill,
                       'Mood Tracker',
-                      const Color(0xFFFFC107),
                     ),
                     _buildGridButton(
                       context,
                       '/personalized-advice',
                       CupertinoIcons.lightbulb_fill,
                       'Advice',
-                      const Color(0xFFFF5722),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
               _buildDailyTip(),
-              const SizedBox(height: 60),
-              CupertinoButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/venting-out');
-                },
-                color: CupertinoColors.systemRed.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(12),
-                child: const Text(
-                  "Let's Vent Out",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              const SizedBox(height: 40),
+              _buildVentingOutButton(context),
             ],
           ),
         ),
@@ -86,19 +72,19 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildGridButton(BuildContext context, String route, IconData icon,
-      String label, Color color) {
+  Widget _buildGridButton(
+      BuildContext context, String route, IconData icon, String label) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, route);
       },
       child: Container(
         decoration: BoxDecoration(
-          color: color,
+          color: CupertinoColors.systemGrey6,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.5),
+              color: CupertinoColors.systemGrey4.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
               offset: const Offset(0, 3),
@@ -108,14 +94,33 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 50, color: Colors.white),
+            ShaderMask(
+              shaderCallback: (bounds) => const LinearGradient(
+                colors: [
+                  CupertinoColors.activeBlue,
+                  CupertinoColors.activeGreen
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ).createShader(bounds),
+              child: Icon(icon, size: 50, color: Colors.white),
+            ),
             const SizedBox(height: 10),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+            ShaderMask(
+              shaderCallback: (bounds) => const LinearGradient(
+                colors: [
+                  CupertinoColors.activeBlue,
+                  CupertinoColors.activeGreen
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ).createShader(bounds),
+              child: Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
@@ -127,7 +132,7 @@ class HomeScreen extends StatelessWidget {
   Widget _buildDailyTip() {
     return Container(
       decoration: BoxDecoration(
-        color: CupertinoColors.white,
+        color: CupertinoColors.systemGrey6,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -159,6 +164,42 @@ class HomeScreen extends StatelessWidget {
                 fontStyle: FontStyle.italic,
               )),
         ],
+      ),
+    );
+  }
+
+  Widget _buildVentingOutButton(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/venting-out');
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [CupertinoColors.activeBlue, CupertinoColors.activeGreen],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: CupertinoColors.systemGrey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: const Text(
+          "Let's Vent Out",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
