@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart'; // Import Material for Colors
+import 'package:flutter/material.dart';
+import 'package:thera_wise/database_helper.dart';
 
 class LogMoodScreen extends StatefulWidget {
   const LogMoodScreen({super.key});
@@ -17,7 +18,14 @@ class _LogMoodScreenState extends State<LogMoodScreen> {
     return CupertinoPageScaffold(
       // Navigation bar at the top of the screen
       navigationBar: CupertinoNavigationBar(
-        middle: Text('Log Mood'), // Title of the screen
+        middle: Text(
+          'Log Mood',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              fontSize: 24,
+              color: CupertinoColors.black),
+        ), // Title of the screen
       ),
       // SafeArea ensures the content is within the safe bounds of the screen
       child: SafeArea(
@@ -38,7 +46,7 @@ class _LogMoodScreenState extends State<LogMoodScreen> {
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center, // Center align the text
                 ),
-                SizedBox(height: 80), // Spacer
+                SizedBox(height: 60), // Spacer
                 // Row of mood options represented by icons
                 Row(
                   mainAxisAlignment:
@@ -50,17 +58,20 @@ class _LogMoodScreenState extends State<LogMoodScreen> {
                     _buildMoodOption('Sad', CupertinoIcons.smiley, Colors.blue),
                     _buildMoodOption(
                         'Angry', CupertinoIcons.flame_fill, Colors.red),
-                    _buildMoodOption('Stressed',
-                        CupertinoIcons.bolt_horizontal_fill, Colors.orange),
+                    _buildMoodOption(
+                        'Stressed',
+                        CupertinoIcons.bolt_horizontal_fill,
+                        Color.fromARGB(255, 255, 208, 0)),
                     _buildMoodOption('Calm', CupertinoIcons.time, Colors.green),
                   ],
                 ),
-                SizedBox(height: 80), // Spacer
+                SizedBox(height: 60), // Spacer
                 // Log Mood button centered on the screen
                 Center(
                   child: CupertinoButton.filled(
                     onPressed: () {
                       // Save the mood log to the database
+                      DatabaseHelper().insertMoodLog(_selectedMood);
                     },
                     child: Text('Log Mood'), // Button text
                     minSize: 25, // Minimum size of the button
@@ -112,7 +123,7 @@ class _LogMoodScreenState extends State<LogMoodScreen> {
                       .inactiveGray, // Icon color changes based on selection
             ),
           ),
-          SizedBox(height: 10), // Spacer
+          SizedBox(height: 5), // Spacer
           // Label for the mood
           Text(
             mood,
