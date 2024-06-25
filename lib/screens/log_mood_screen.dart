@@ -10,74 +10,109 @@ class LogMoodScreen extends StatefulWidget {
 }
 
 class _LogMoodScreenState extends State<LogMoodScreen> {
-  // Variable to store the selected mood
   String _selectedMood = 'Happy';
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      // Navigation bar at the top of the screen
       navigationBar: CupertinoNavigationBar(
-        middle: Text(
-          'Log Mood',
-          style: TextStyle(
+          middle: Text(
+            'Log Mood',
+            style: TextStyle(
               fontWeight: FontWeight.bold,
               fontStyle: FontStyle.italic,
               fontSize: 24,
-              color: CupertinoColors.black),
-        ), // Title of the screen
-      ),
-      // SafeArea ensures the content is within the safe bounds of the screen
+              color: CupertinoColors.black,
+            ),
+          ),
+          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+          border: Border(
+            bottom: BorderSide.none,
+          )),
       child: SafeArea(
-        // Center the content vertically and horizontally
         child: Center(
-          // Padding around the content
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              mainAxisAlignment:
-                  MainAxisAlignment.center, // Center the content vertically
-              crossAxisAlignment: CrossAxisAlignment
-                  .stretch, // Stretch the content horizontally
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Title text
+                SizedBox(
+                    height: 20), // Add some space between the top and the text
                 Text(
                   "What's the vibe today?",
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center, // Center align the text
+                  textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 60), // Spacer
-                // Row of mood options represented by icons
-                Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceAround, // Space the icons evenly
-                  children: [
-                    // Build each mood option
-                    _buildMoodOption('Happy', CupertinoIcons.smiley_fill,
-                        Color.fromRGBO(255, 134, 59, 1)),
-                    _buildMoodOption('Sad', CupertinoIcons.smiley, Colors.blue),
-                    _buildMoodOption(
-                        'Angry', CupertinoIcons.flame_fill, Colors.red),
-                    _buildMoodOption(
-                        'Stressed',
-                        CupertinoIcons.bolt_horizontal_fill,
-                        Color.fromARGB(255, 255, 208, 0)),
-                    _buildMoodOption('Calm', CupertinoIcons.time, Colors.green),
-                  ],
+                SizedBox(height: 20),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildMoodOption('Happy', CupertinoIcons.smiley_fill,
+                              Colors.orange),
+                          _buildMoodOption(
+                              'Sad', CupertinoIcons.smiley, Colors.blue),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildMoodOption(
+                              'Angry', CupertinoIcons.flame_fill, Colors.red),
+                          _buildMoodOption(
+                              'Stressed',
+                              CupertinoIcons.bolt_horizontal_fill,
+                              Colors.yellow),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      _buildMoodOption(
+                          'Calm', CupertinoIcons.time, Colors.green),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 60), // Spacer
-                // Log Mood button centered on the screen
+                SizedBox(height: 60),
                 Center(
-                  child: CupertinoButton.filled(
-                    onPressed: () {
-                      // Save the mood log to the database
+                  child: GestureDetector(
+                    onTap: () {
                       DatabaseHelper().insertMoodLog(_selectedMood);
                     },
-                    child: Text('Log Mood'), // Button text
-                    minSize: 25, // Minimum size of the button
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 8), // Padding inside the button
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            CupertinoColors.activeBlue,
+                            CupertinoColors.activeGreen
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: [
+                          BoxShadow(
+                            color: CupertinoColors.systemGrey,
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        'Log Mood',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -88,50 +123,49 @@ class _LogMoodScreenState extends State<LogMoodScreen> {
     );
   }
 
-  // Widget to build each mood option with icon and label
   Widget _buildMoodOption(String mood, IconData icon, Color color) {
     return GestureDetector(
       onTap: () {
-        // Update the selected mood when tapped
         setState(() {
           _selectedMood = mood;
         });
       },
       child: Column(
-        mainAxisSize: MainAxisSize.min, // Take only the minimum size required
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Animated container for smooth transition effects
           AnimatedContainer(
-            duration: Duration(milliseconds: 300), // Duration of the animation
-            curve: Curves.easeInOut, // Animation curve
-            padding: EdgeInsets.all(_selectedMood == mood
-                ? 12.0
-                : 8.0), // Padding changes based on selection
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            padding: EdgeInsets.all(_selectedMood == mood ? 12.0 : 8.0),
             decoration: BoxDecoration(
               color: _selectedMood == mood
                   ? color.withOpacity(0.2)
-                  : Colors
-                      .transparent, // Background color changes based on selection
-              shape: BoxShape.circle, // Circular shape
+                  : Colors.transparent,
+              shape: BoxShape.circle,
+              boxShadow: _selectedMood == mood
+                  ? [
+                      BoxShadow(
+                        color: color.withOpacity(0.5),
+                        spreadRadius: 3,
+                        blurRadius: 10,
+                        offset: Offset(0, 3),
+                      )
+                    ]
+                  : [],
             ),
             child: Icon(
               icon,
-              size: 50, // Size of the icon
-              color: _selectedMood == mood
-                  ? color
-                  : CupertinoColors
-                      .inactiveGray, // Icon color changes based on selection
+              size: 50,
+              color:
+                  _selectedMood == mood ? color : CupertinoColors.inactiveGray,
             ),
           ),
-          SizedBox(height: 5), // Spacer
-          // Label for the mood
+          SizedBox(height: 5),
           Text(
             mood,
             style: TextStyle(
-              color: _selectedMood == mood
-                  ? color
-                  : CupertinoColors
-                      .inactiveGray, // Text color changes based on selection
+              color:
+                  _selectedMood == mood ? color : CupertinoColors.inactiveGray,
             ),
           ),
         ],

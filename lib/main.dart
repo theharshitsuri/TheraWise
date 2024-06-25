@@ -6,6 +6,7 @@ import 'package:thera_wise/screens/insert_exercise_screen.dart';
 import 'package:thera_wise/screens/log_mood_screen.dart';
 import 'package:thera_wise/screens/mood_tracker_screen.dart';
 import 'package:thera_wise/screens/personalized_advice_screen.dart';
+import 'package:thera_wise/screens/venting_out_screen.dart';
 
 void main() {
   runApp(TheraWiseApp());
@@ -28,6 +29,7 @@ class TheraWiseApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/personalized-advice': (context) => const PersonalizedAdviceScreen(),
         '/mood-tracker': (context) => const MoodTrendsScreen(),
+        '/venting-out': (context) => const VentingOutScreen(),
       },
     );
   }

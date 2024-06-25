@@ -72,7 +72,8 @@ class _MoodTrendsScreenState extends State<MoodTrendsScreen> {
                 fontWeight: FontWeight.bold,
                 fontStyle: FontStyle.italic,
                 fontSize: 24,
-                color: CupertinoColors.black)), // Title of the screen
+                color: CupertinoColors.black)),
+        border: Border(bottom: BorderSide.none), // Title of the screen
       ),
       child: SafeArea(
         child: Padding(
@@ -105,27 +106,6 @@ class _MoodTrendsScreenState extends State<MoodTrendsScreen> {
                           child: _buildMoodDistributionChart(moodDistribution),
                         ),
                         SizedBox(height: 16),
-                        CupertinoSegmentedControl<String>(
-                          children: {
-                            'Daily': Text('Daily'),
-                            'Weekly': Text('Weekly'),
-                            'Monthly': Text('Monthly'),
-                          },
-                          onValueChanged: (value) {
-                            setState(() {
-                              selectedPeriod = value;
-                              futureMoodLogs =
-                                  _fetchMoodLogs(); // Refetch logs to update the charts
-                            });
-                          },
-                          groupValue: selectedPeriod,
-                        ),
-                        SizedBox(height: 16),
-                        Text(
-                            'Average Mood Score: ${averageMoodScore.toStringAsFixed(2)}',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                        SizedBox(height: 16),
                         Container(
                           height: 300, // Set a finite height for the chart
                           child: _buildMoodTrendsChart(filteredLogs),
@@ -143,80 +123,55 @@ class _MoodTrendsScreenState extends State<MoodTrendsScreen> {
   }
 
   Widget _buildMoodTrendsChart(List<MoodLog> moodLogs) {
-    return LineChart(
-      LineChartData(
-        minX: 0,
-        maxX: max(1, moodLogs.length - 1).toDouble(),
-        minY: 1,
-        maxY: 5,
-        gridData: FlGridData(show: true),
+    final moodDistribution = _calculateMoodDistribution(moodLogs);
+    final List<BarChartGroupData> barGroups =
+        moodDistribution.entries.map((entry) {
+      final mood = entry.key;
+      final count = entry.value;
+      return BarChartGroupData(
+        x: _moodToIndex(mood),
+        barRods: [
+          BarChartRodData(
+            y: count.toDouble(),
+            colors: [_getMoodColor(mood)],
+            width: 22,
+          ),
+        ],
+      );
+    }).toList();
+
+    return BarChart(
+      BarChartData(
+        alignment: BarChartAlignment.spaceAround,
+        maxY: moodDistribution.values.reduce(max).toDouble() + 1,
+        barGroups: barGroups,
         titlesData: FlTitlesData(
+          leftTitles: SideTitles(showTitles: true),
           bottomTitles: SideTitles(
             showTitles: true,
-            getTitles: (value) {
-              final index = value.toInt();
-              if (index >= 0 && index < moodLogs.length) {
-                return moodLogs[index].formattedDate;
-              }
-              return '';
-            },
-            margin: 8,
-            reservedSize: 30,
-            interval: 1,
-            getTextStyles: (context, value) => TextStyle(
-              color: CupertinoColors.systemGrey,
-              fontSize: 10,
-            ),
-          ),
-          leftTitles: SideTitles(
-            showTitles: true,
-            getTitles: (value) {
+            getTitles: (double value) {
               switch (value.toInt()) {
-                case 1:
+                case 0:
                   return 'Sad';
-                case 2:
+                case 1:
                   return 'Angry';
-                case 3:
+                case 2:
                   return 'Stressed';
-                case 4:
+                case 3:
                   return 'Calm';
-                case 5:
+                case 4:
                   return 'Happy';
                 default:
                   return '';
               }
             },
-            margin: 8,
-            reservedSize: 40,
-            interval: 1,
-            getTextStyles: (context, value) => TextStyle(
-              color: CupertinoColors.systemGrey,
-              fontSize: 12,
-            ),
           ),
         ),
         borderData: FlBorderData(
           show: true,
           border: Border.all(color: CupertinoColors.systemGrey),
         ),
-        lineBarsData: [
-          LineChartBarData(
-            spots: moodLogs.asMap().entries.map((entry) {
-              final index = entry.key;
-              final moodLog = entry.value;
-              return FlSpot(index.toDouble(), moodLog.moodIndex.toDouble());
-            }).toList(),
-            isCurved: true,
-            colors: [CupertinoColors.activeBlue],
-            barWidth: 4,
-            isStrokeCapRound: true,
-            dotData: FlDotData(show: false),
-            belowBarData: BarAreaData(
-              show: true,
-              colors: [CupertinoColors.activeBlue.withOpacity(0.2)],
-            ),
-          ),
-        ],
+        gridData: FlGridData(show: false),
       ),
     );
   }
@@ -243,6 +198,23 @@ class _MoodTrendsScreenState extends State<MoodTrendsScreen> {
         }).toList(),
       ),
     );
+  }
+
+  int _moodToIndex(String mood) {
+    switch (mood) {
+      case 'Sad':
+        return 0;
+      case 'Angry':
+        return 1;
+      case 'Stressed':
+        return 2;
+      case 'Calm':
+        return 3;
+      case 'Happy':
+        return 4;
+      default:
+        return -1;
+    }
   }
 
   Color _getMoodColor(String mood) {

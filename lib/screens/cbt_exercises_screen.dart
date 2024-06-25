@@ -97,6 +97,8 @@ class CBTExercisesScreen extends StatelessWidget {
                 fontStyle: FontStyle.italic,
                 fontSize: 24,
                 color: CupertinoColors.black)),
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        border: Border(bottom: BorderSide.none),
       ),
       child: SafeArea(
         child: Padding(
