@@ -1,20 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:thera_wise/screens/quote_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final String randomQuote = QuotesPage.getRandomQuote();
+
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
         middle: Text(
           'TheraWise',
           style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-              fontSize: 30,
-              color: CupertinoColors.black),
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+            fontSize: 30,
+            color: CupertinoColors.black,
+          ),
         ),
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         border: Border(
@@ -62,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 25),
-              _buildDailyTip(),
+              _buildDailyTip(randomQuote),
               const SizedBox(height: 40),
               _buildVentingOutButton(context),
             ],
@@ -129,7 +133,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDailyTip() {
+  Widget _buildDailyTip(String quote) {
     return Container(
       decoration: BoxDecoration(
         color: CupertinoColors.systemGrey6,
@@ -144,25 +148,27 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       padding: const EdgeInsets.all(16.0),
-      child: const Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text('Tip of the Day',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: CupertinoColors.black)),
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: CupertinoColors.black,
+              )),
           SizedBox(height: 10),
           Text(
-              "Every day may not be good, but there's something good in every day.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 98, 98, 102),
-                fontStyle: FontStyle.italic,
-              )),
+            quote,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              color: Color.fromARGB(255, 98, 98, 102),
+              fontStyle: FontStyle.italic,
+            ),
+          ),
         ],
       ),
     );
